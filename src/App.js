@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Container } from '@material-ui/core';
+import CustomTable from "./components/table";
+import FilterField from './components/filter-field';
+import UserInfo from './components/user-info';
+import DataSelectButtons from './components/data-select-buttons';
+import UserForm from './components/user-form';
 
 function App() {
+  const [filterField, setFilterField] = useState('');
+  const [user, setUser] = useState(null);
+  const [formIsOpen, setFormIsOpen] = useState(false);
+  const [isSmallData, setIsSmallData] = useState(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="md" className="app">
+      <DataSelectButtons
+        isSmallData={isSmallData}
+        setIsSmallData={setIsSmallData}
+        setFormIsOpen={setFormIsOpen}
+        formIsOpen={formIsOpen} 
+        />
+
+      {formIsOpen && <UserForm/>}
+        <FilterField
+          filterField={filterField}
+          setFilterField={setFilterField}
+        />
+      <CustomTable isSmallData={isSmallData} filterField={filterField} setUser={setUser} />
+      {!!user && !!Object.keys(user).length && <UserInfo user={user} />}
+    </Container>
   );
 }
 
